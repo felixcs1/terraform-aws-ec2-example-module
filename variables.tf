@@ -4,7 +4,7 @@ variable "aws_instance_type" {
 
   validation {
     condition = can(regex("t2.*", var.aws_instance_type))
-    error_message = "aws_instance_type must be t2.micro or t3.micro"
+    error_message = "aws_instance_type has to be t2.micro or t3.micro"
   }
 }
 
