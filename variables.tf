@@ -1,3 +1,9 @@
+
+variable "instance_name" {
+  type = string
+}
+
+
 variable "aws_instance_type" {
   default = "t2.micro"
   description = "Size of instance"

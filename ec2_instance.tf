@@ -9,6 +9,10 @@ resource "aws_instance" "app_server" {
 
     key_name               = aws_key_pair.gen_key_pair.key_name
     vpc_security_group_ids = [aws_security_group.renamed_security_group.id]
+
+    tags = {
+      Name = "${var.instance_name}"
+    }
 }
 
 
