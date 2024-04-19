@@ -11,7 +11,7 @@ provider "aws" {
 }
 
 module "aws_server" {
-  source        = "felixcs1/terraform-aws-module-example"
+  source        = "felixcs1/ec2-example-module/aws"
   version       = "0.0.3"
   instance_name = "my_instance"
   ami           = "ami-0780837dd83465d73"
@@ -24,3 +24,10 @@ output "ssh_command" {
 ```
 
 ### Release a new version
+
+```
+git tag x.x.x
+git push origin x.x.x
+```
+
+Then go to tf registry and release new version.
