@@ -1,21 +1,15 @@
-locals {
-  ami = "ami-0780837dd83465d73"
-}
-
 resource "aws_instance" "app_server" {
-    
-    ami           = local.ami
-    instance_type = var.aws_instance_type
 
-    key_name               = aws_key_pair.gen_key_pair.key_name
-    vpc_security_group_ids = [aws_security_group.renamed_security_group.id]
+  ami           = var.ami
+  instance_type = var.instance_type
 
-    tags = {
-      Name = "${var.instance_name}"
-    }
+  key_name               = aws_key_pair.gen_key_pair.key_name
+  vpc_security_group_ids = [aws_security_group.renamed_security_group.id]
+
+  tags = {
+    Name = "${var.instance_name}"
+  }
 }
-
-
 
 # Automatically generated key 'gen_tls_pk':
 resource "tls_private_key" "gen_tls_pk" {
@@ -32,11 +26,11 @@ resource "aws_key_pair" "gen_key_pair" {
 # Saves a local file
 resource "local_file" "gen_key_pair" {
   content  = tls_private_key.gen_tls_pk.private_key_pem
-  filename = var.key_file
+  filename = "${var.key_file}"
 }
 
 resource "aws_security_group" "renamed_security_group" {
-  name  = "my_module_sec_group"
+  name = "ec2_sec_group"
 
   # Enable ssh external server connection:
   ingress {
@@ -46,14 +40,18 @@ resource "aws_security_group" "renamed_security_group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   # Allow all outbound traffic
-  dynamic "egress" {
-    for_each = var.egress_ports
-    content {
-      from_port   = egress.value
-      to_port     = egress.value
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }

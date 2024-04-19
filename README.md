@@ -13,7 +13,7 @@ provider "aws" {
 
 module "aws_server" {
   source            = "./terraform-aws-module-example"
-  aws_instance_type = "t2.micro"
+  instance_type = "t2.micro"
   msg               = "HELLO WORLD"
   key_pair_name = "instance_key_pair"
   egress_ports = [22, 80]
