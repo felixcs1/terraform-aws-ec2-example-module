@@ -8,19 +8,19 @@ terraform {
 
 provider "aws" {
   region  = "eu-west-2"
-  profile = "personal"
 }
 
 module "aws_server" {
-  source            = "./terraform-aws-module-example"
+  source        = "felixcs1/terraform-aws-module-example"
+  version       = "0.0.3"
+  instance_name = "my_instance"
+  ami           = "ami-0780837dd83465d73"
   instance_type = "t2.micro"
-  msg               = "HELLO WORLD"
-  key_pair_name = "instance_key_pair"
-  egress_ports = [22, 80]
 }
 
-
-output "ec2_public_dns" {
-  value = module.aws_server.instance_public_dns
+output "ssh_command" {
+  value = "chmod 400 ec2_key.pem && ssh -i ec2_key.pem ec2-user@${module.aws_server.instance_public_dns}"
 }
 ```
+
+### Release a new version
