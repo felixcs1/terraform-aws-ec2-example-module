@@ -1,12 +1,3 @@
-data "aws_vpc" "main" {
-
-  state = "available"
-  tags = {
-    Name = var.vpc_name
-  }
-}
-
-
 resource "aws_instance" "app_server" {
 
   ami           = var.ami
@@ -40,8 +31,6 @@ resource "local_file" "gen_key_pair" {
 
 resource "aws_security_group" "renamed_security_group" {
   name = "ec2_sec_group"
-
-  vpc_id = data.aws_vpc.main.id
 
   # Enable ssh external server connection:
   ingress {
